@@ -7,7 +7,9 @@ import time
 from open_ephys.control import OpenEphysHTTPServer
 
 local_host = "localhost"
-# local_host = "MECHSE-MGAZZ-02:ad.uillinois.edu"
+local_host = "10.195.200.223"
+# local_host = "130.126.255.85"
+
 http_status = f"http://{local_host}:37497/api/status"
 http_recording = f"http://{local_host}:37497/api/recording"
 http_processors = f"http://{local_host}:37497/api/processors"
@@ -25,6 +27,10 @@ class Server():
         self.server = OpenEphysHTTPServer()
         r = None
         while r is None:
+            if r is None:
+                print(r)
+            else:
+                print(r.json())
             try:
                 r = self.get_status()
             except:
@@ -34,19 +40,23 @@ class Server():
         return requests.get(http_processors)
 
     def get_status(self):
-        return self.server.status()
+        return requests.get(http_status)
+        # return self.server.status()
 
     def set_directory(self):
         return requests.put(http_recording, json={"parent_directory" : "./"})
 
     def set_acquire(self):
-        return self.server.acquire()
+        # return self.server.acquire()
+        return requests.put(http_status, json={"mode" : "ACQUIRE"})
 
     def set_record(self):
-        return self.server.record()
+        # return self.server.record()
+        return requests.put(http_status, json={"mode" : "RECORD"})
 
     def set_idle(self):
-        return self.server.idle()
+        # return self.server.idle()
+        return requests.put(http_status, json={"mode" : "IDLE"})
 
     def set_signal_chain(self,path):
         print("Setting template: ", path)
@@ -83,9 +93,9 @@ gui = GUI()
 server = Server()
 
 # TODO: generate xml files that have user defined signal chain
-recording_task_template = ["/home/lee/Parasol/automation/MiV_automation/signal_chain_acquisition_template_1.xml",\
+recording_task_template = ["/home/lee/Parasol/automation/MiV_automation/templates/signal_chain_template_1.xml",\
                         # "/home/lee/Parasol/automation/MiV_automation/empty_template.xml",\
-                        "/home/lee/Parasol/automation/MiV_automation/signal_chain_acquisition_template_2.xml"]
+                        "/home/lee/Parasol/automation/MiV_automation/templates/signal_chain_template_2.xml"]
 
 
 for path in recording_task_template:
@@ -95,7 +105,7 @@ for path in recording_task_template:
 
     r = server.set_signal_chain(path)   
     r = server.set_record()
-    time.sleep(3)
+    time.sleep(1)
     r = server.set_idle()
     time.sleep(0.1)
     
