@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="gantry">
+  <!-- publishing the joint states to the /JointState topic-->
+  <gazebo>
+      <plugin name="gazebo_ros_joint_state_publisher"
+          filename="libgazebo_ros_joint_state_publisher.so">
+          <update_rate>100</update_rate>
+          <joint_name>x_joint</joint_name>
+          <joint_name>y_joint</joint_name>
+          <joint_name>z_joint</joint_name>
+      </plugin>
+  </gazebo>
+  <xacro:property name="robot_name" value="gantry" />
+
+
+
+  <gazebo reference="base_link">
+    <material>Gazebo/Grey</material>
+  </gazebo>
+  
+  <gazebo reference="x_link">
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <gazebo reference="y_link">
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <gazebo reference="z_link">
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <gazebo reference="z_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+
+
+  <!-- <gazebo>
+    <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+        <robot_param>robot_description</robot_param>
+        <robot_namespace>gantry</robot_namespace>
+        <robot_param_node>robot_state_publisher</robot_param_node>
+        <parameters>$(find gantry_description)/config/controller.yaml</parameters>
+    </plugin>
+  </gazebo> -->
+
+</robot>

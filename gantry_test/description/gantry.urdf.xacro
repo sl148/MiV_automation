@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="gantry">
+
+  <!-- Empty link to referr everything to -->
+  <link name="world" />
+  <!-- Include arm and hand xacro files-->
+  <xacro:include filename="$(find gantry_test)/description/gantry.xacro" />
+
+  <!-- call the arm macro-->
+  <xacro:gantry />
+
+  <xacro:include filename="$(find gantry_test)/description/gantry.gazebo.xacro" />
+  <xacro:include filename="$(find gantry_test)/description/gantry.control.xacro" />
+</robot>
